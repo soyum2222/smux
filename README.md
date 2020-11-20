@@ -131,6 +131,6 @@ func server() {
 
 ```
 
-## Status
+## ABOUT THIS FORK
+1. Add a function 'CloseSession' just close session , keepalive raw connection.
 
-Stable

@@ -207,6 +207,26 @@ func (s *Session) Close() error {
 	}
 }
 
+// CloseSession just close the session , keepalive raw connection
+func (s *Session) CloseSession() error {
+	var once bool
+	s.dieOnce.Do(func() {
+		close(s.die)
+		once = true
+	})
+
+	if once {
+		s.streamLock.Lock()
+		for k := range s.streams {
+			s.streams[k].sessionClose()
+		}
+		s.streamLock.Unlock()
+		return nil
+	} else {
+		return io.ErrClosedPipe
+	}
+}
+
 // notifyBucket notifies recvLoop that bucket is available
 func (s *Session) notifyBucket() {
 	select {
