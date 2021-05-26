@@ -503,6 +503,7 @@ func (s *Session) sendLoop() {
 			// store conn error
 			if err != nil {
 				s.notifyWriteError(err)
+				_ = s.Close()
 				return
 			}
 		}
